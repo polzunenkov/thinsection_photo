@@ -5,6 +5,9 @@ import click
 def copy(path):
 	''' копирует фотографии с телефона из дирректории Camera -стандартной камеры Honor
 	''' 
+	# create main folder
+	subprocess.run(["mkdir", "-p", path])
+	
 	subprocess.run(["adb", "pull", "/sdcard/DCIM/Camera", path])		
 
 def rename(path, thinsection_name):
@@ -26,16 +29,18 @@ def del_photo_folder(pattern):
 @click.option('--path', help='Path to destination folder', required=True)
 @click.option('--pattern', help='pattern to delete files from Camera folder', default="IMG_*.jpg")
 @click.option('--thinsection_name', help='name for the thin section', default="thin01")
-def main(path, pattern, thinsection_name):
+@click.option('--do_not_remove_from_phone', '-D', help='remove phtos from phone folder ', is_flag=True, default=False)
+def main(path, pattern, thinsection_name, do_not_remove_from_phone):
 	'''
 	Копирует файлы с камеры телефона на компьютер
 	'''
 	path = os.path.normpath(path)
-	# create main folder
-	subprocess.run(["mkdir", "-p", path])
+	click.echo(do_not_remove_from_phone)
+	
 	copy(path)
 	rename(path, thinsection_name)
-	#del_photo_folder(pattern)
+	if not do_not_remove_from_phone:
+		del_photo_folder(pattern)
 
 if __name__=="__main__":
 	main()
