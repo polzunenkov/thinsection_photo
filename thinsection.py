@@ -3,7 +3,8 @@ import os
 import click
 
 def copy(path):
-	''' копирует фотографии с телефона из дирректории Camera -стандартной камеры Honor
+	''' копирует фотографии с телефона из дирректории Camera 
+            -стандартной камеры Honor
 	''' 
 	# create main folder
 	subprocess.run(["mkdir", "-p", path])
@@ -11,7 +12,8 @@ def copy(path):
 	subprocess.run(["adb", "pull", "/sdcard/DCIM/Camera", path])		
 
 def rename(path, thinsection_name):
-	''' переименовывает в name_folder скопированную папку с телефона из дирректории Camera -стандартной камеры Honor
+	''' переименовывает в name_folder скопированную папку 
+            с телефона из дирректории Camera -стандартной камеры Honor
 	''' 
 	path_old = os.path.join(path, "Camera")
 	path_new = os.path.join(path, thinsection_name)
@@ -19,17 +21,24 @@ def rename(path, thinsection_name):
 	
 
 def del_photo_folder(pattern):
-	''' удаляет фотографии с телефона из дирректории Camera -стандартной камеры Honor
+	''' удаляет фотографии с телефона из дирректории Camera 
+        -стандартной камеры Honor
 	pattern - <common prefix>*.расширение файла- например jpg
 	'''
  
-	subprocess.run(["adb", "shell", "rm", "-f", f"/sdcard/DCIM/Camera/{pattern}"])		
+	subprocess.run(["adb", "shell", "rm", "-f", 
+                        f"/sdcard/DCIM/Camera/{pattern}"])		
 
 @click.command()
 @click.option('--path', help='Path to destination folder', required=True)
-@click.option('--pattern', help='pattern to delete files from Camera folder', default="IMG_*.jpg")
-@click.option('--thinsection_name', help='name for the thin section', default="thin01")
-@click.option('--do_not_remove_from_phone', '-D', help='remove phtos from phone folder ', is_flag=True, default=False)
+@click.option('--pattern', 
+              help='pattern to delete files from Camera folder', 
+              default="IMG_*.jpg")
+@click.option('--thinsection_name', help='name for the thin section', 
+              default="thin01")
+@click.option('--do_not_remove_from_phone', '-D', 
+              help='remove phtos from phone folder ', 
+              is_flag=True, default=False)
 def main(path, pattern, thinsection_name, do_not_remove_from_phone):
 	'''
 	Копирует файлы с камеры телефона на компьютер
@@ -44,17 +53,4 @@ def main(path, pattern, thinsection_name, do_not_remove_from_phone):
 
 if __name__=="__main__":
 	main()
-
-#
-
-
-
-
-
-
-
-
-
-
-
 
